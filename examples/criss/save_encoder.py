@@ -36,8 +36,7 @@ def get_avg_pool(
         encoder_mask = encoder_mask[1:, :, :]
         np_encoder_outs = np_encoder_outs[1, :, :]
     masked_encoder_outs = encoder_mask * np_encoder_outs
-    avg_pool = (masked_encoder_outs / encoder_mask.sum(axis=0)).sum(axis=0)
-    return avg_pool
+    return (masked_encoder_outs / encoder_mask.sum(axis=0)).sum(axis=0)
 
 
 def main(args):
