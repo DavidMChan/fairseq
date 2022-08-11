@@ -167,7 +167,7 @@ class Data2VecAudioModel(BaseFairseqModel):
         super().set_num_updates(num_updates)
 
         if self.ema is None and self.final_proj is not None:
-            logger.info(f"making ema teacher")
+            logger.info("making ema teacher")
             self.make_ema_teacher()
         elif self.training and self.ema is not None:
             if self.cfg.ema_decay != self.cfg.ema_end_decay:
@@ -190,13 +190,13 @@ class Data2VecAudioModel(BaseFairseqModel):
         state = super().state_dict(destination, prefix, keep_vars)
 
         if self.ema is not None:
-            state[prefix + "_ema"] = self.ema.fp32_params
+            state[f"{prefix}_ema"] = self.ema.fp32_params
 
         return state
 
     def _load_from_state_dict(self, state_dict, prefix, *args, **kwargs):
         if self.ema is not None:
-            k = prefix + "_ema"
+            k = f"{prefix}_ema"
             assert k in state_dict
             self.ema.restore(state_dict[k], True)
             del state_dict[k]
